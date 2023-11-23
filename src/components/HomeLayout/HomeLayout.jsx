@@ -1,3 +1,4 @@
+import PostCard from "../PostCard/PostCard";
 import Profile from "../Profile/Profile";
 
 const HomeLayout = () => {
@@ -8,7 +9,12 @@ const HomeLayout = () => {
         <Profile />
       </div>
       {/* middle side */}
-      <div className="bg-red-400 col-span-6">f</div>
+      <div className="col-span-6">
+        <PostCard />
+        <PostCard />
+        <PostCard />
+        <PostCard />
+      </div>
       {/* right side */}
       <div className="bg-yellow-400 col-span-3">d</div>
     </div>
