@@ -1,3 +1,4 @@
+import Friends from "../Friends/Friends";
 import PostCard from "../PostCard/PostCard";
 import Profile from "../Profile/Profile";
 
@@ -16,7 +17,9 @@ const HomeLayout = () => {
         <PostCard />
       </div>
       {/* right side */}
-      <div className="bg-yellow-400 col-span-3">d</div>
+      <div className=" col-span-3">
+        <Friends />
+      </div>
     </div>
   );
 };
