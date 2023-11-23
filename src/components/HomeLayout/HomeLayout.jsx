@@ -4,7 +4,7 @@ const HomeLayout = () => {
   return (
     <div className="grid grid-cols-12 gap-4">
       {/* left side */}
-      <div className="bg-slate-400 col-span-3">
+      <div className="col-span-3">
         <Profile />
       </div>
       {/* middle side */}
