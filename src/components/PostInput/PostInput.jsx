@@ -1,49 +1,55 @@
 import { useForm } from "react-hook-form";
-import {useState} from "react";
+import { useState } from "react";
+import { getUser } from "../../getUser/utilities";
 
 const PostInput = () => {
-  console.log(import.meta.env.VITE_IMG)
-  const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${import.meta.env.VITE_IMG}`
+  const user = getUser();
+  console.log(import.meta.env.VITE_IMG);
+  const imgUploadUrl = `https://api.imgbb.com/1/upload?key=${
+    import.meta.env.VITE_IMG
+  }`;
   const { register, handleSubmit } = useForm();
   const [data, setData] = useState("");
 
   const onSubmit = (data) => {
-    const formData = new FormData()
-    console.log(data)
-    formData.append('image', data.img[0])
+    const formData = new FormData();
+    console.log(data);
+    formData.append("image", data.img[0]);
 
     fetch(imgUploadUrl, {
       method: "POST",
-      body: formData
+      body: formData,
     })
-      .then(res => res.json())
-      .then(imgRes => {
-        if(imgRes.success){
-          fetch('http://localhost:5000/createPost', {
+      .then((res) => res.json())
+      .then((imgRes) => {
+        if (imgRes.success) {
+          fetch("http://localhost:5000/createPost", {
             method: "POST",
             headers: {
-              "Content-Type": "application/json"
+              "Content-Type": "application/json",
             },
-            body: JSON.stringify({content: data.content, imgUrl: imgRes.data.url})
+            body: JSON.stringify({
+              content: data.content,
+              imgUrl: imgRes.data.url,
+            }),
           })
-            .then(res => res.json())
-            .then(iData => console.log(iData))
+            .then((res) => res.json())
+            .then((iData) => console.log(iData));
         }
-      })
-  }
-   
+      });
+  };
+
   return (
     <div>
       <div
         onClick={() => document.getElementById("my_modal_1").showModal()}
         className="flex items-center gap-4 p-4 shadow rounded mb-8 border">
-        <img
-          className="w-12 h-12 object-cover rounded-full"
-          src="https://i.ibb.co/c18mK23/Fj-U2lkc-WYAg-NG6d.jpg"
-          alt=""
-        />
+        <div
+          className="w-12 h-12 flex justify-center items-center text-xl font-bold bg-pink-300 rounded-full active:scale-95">
+          {user?.userName?.split("")[0].toUpperCase()}
+        </div>
         <input
-          className="w-full  bg-slate-200 rounded-full p-2 pl-4"
+          className="w-[75%]  bg-slate-200 rounded-full p-2 pl-4"
           placeholder="what's your mind"
           type="text"
         />
@@ -51,13 +57,11 @@ const PostInput = () => {
       </div>
       <dialog id="my_modal_1" className="modal">
         <div className=" p-4 shadow rounded mb-8 border bg-base-100 w-[800px]">
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full" >
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full">
             <div className="flex items-center gap-4 mb-5">
-              <img
-                className="w-12 h-12 object-cover rounded-full"
-                src="https://i.ibb.co/c18mK23/Fj-U2lkc-WYAg-NG6d.jpg"
-                alt=""
-              />
+              <div className="w-12 h-12 flex justify-center items-center text-xl font-bold bg-pink-300 rounded-full active:scale-95">
+                {user?.userName?.split("")[0].toUpperCase()}
+              </div>
               <input
                 className="w-full  bg-slate-200 rounded-full p-2 pl-4"
                 placeholder="what's your mind"
@@ -86,18 +90,28 @@ const PostInput = () => {
                     />
                   </svg>
                   <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                    <span className="font-semibold">Click to upload</span> or drag
-                    and drop
+                    <span className="font-semibold">Click to upload</span> or
+                    drag and drop
                   </p>
                   <p className="text-xs text-gray-500 dark:text-gray-400">
                     SVG, PNG, JPG or GIF (MAX. 800x400px)
                   </p>
                 </div>
-                <input {...register("img")} name="img" id="dropzone-file" type="file" className="hidden" />
+                <input
+                  {...register("img")}
+                  name="img"
+                  id="dropzone-file"
+                  type="file"
+                  className="hidden"
+                />
               </label>
             </div>
 
-            <button onClick={() => document.getElementById('my_modal_1').close()} className="btn rounded-full w-full">Post</button>
+            <button
+              onClick={() => document.getElementById("my_modal_1").close()}
+              className="btn rounded-full w-full">
+              Post
+            </button>
           </form>
         </div>
       </dialog>
