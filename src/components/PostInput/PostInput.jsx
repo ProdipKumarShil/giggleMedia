@@ -97,7 +97,7 @@ const PostInput = () => {
               </label>
             </div>
 
-            <button className="btn rounded-full w-full">Post</button>
+            <button onClick={() => document.getElementById('my_modal_1').close()} className="btn rounded-full w-full">Post</button>
           </form>
         </div>
       </dialog>
