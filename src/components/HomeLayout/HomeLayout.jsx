@@ -1,5 +1,6 @@
 import Friends from "../Friends/Friends";
 import PostCard from "../PostCard/PostCard";
+import PostInput from "../PostInput/PostInput";
 import Profile from "../Profile/Profile";
 
 const HomeLayout = () => {
@@ -11,6 +12,7 @@ const HomeLayout = () => {
       </div>
       {/* middle side */}
       <div className="col-span-6">
+        <PostInput />
         <PostCard />
         <PostCard />
         <PostCard />
