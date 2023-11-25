@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { getUser } from "../../getUser/utilities";
+import toast from "react-hot-toast";
 
 const PostInput = () => {
   const user = getUser();
@@ -9,7 +10,6 @@ const PostInput = () => {
     import.meta.env.VITE_IMG
   }`;
   const { register, handleSubmit } = useForm();
-  const [data, setData] = useState("");
 
   const onSubmit = (data) => {
     const formData = new FormData();
@@ -29,12 +29,21 @@ const PostInput = () => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
+              userName: user.userName,
               content: data.content,
               imgUrl: imgRes.data.url,
+              date: new Date(),
             }),
           })
             .then((res) => res.json())
-            .then((iData) => console.log(iData));
+            .then((iData) => {
+              if (iData.status) {
+                toast.success(iData.message);
+                document.getElementById("my_modal_1").close();
+              } else {
+                toast.success(iData.message);
+              }
+            });
         }
       });
   };
@@ -44,8 +53,7 @@ const PostInput = () => {
       <div
         onClick={() => document.getElementById("my_modal_1").showModal()}
         className="flex items-center gap-4 p-4 shadow rounded mb-8 border">
-        <div
-          className="w-12 h-12 flex justify-center items-center text-xl font-bold bg-pink-300 rounded-full active:scale-95">
+        <div className="w-12 h-12 flex justify-center items-center text-xl font-bold bg-pink-300 rounded-full active:scale-95">
           {user?.userName?.split("")[0].toUpperCase()}
         </div>
         <input
@@ -107,12 +115,9 @@ const PostInput = () => {
               </label>
             </div>
 
-            <button
-              onClick={() => document.getElementById("my_modal_1").close()}
-              className="btn rounded-full w-full">
-              Post
-            </button>
+            <button className="btn rounded-full w-full">Post</button>
           </form>
+          <button onClick={() => document.getElementById("my_modal_1").close()} className="btn rounded-full w-full mt-4">Close</button>
         </div>
       </dialog>
     </div>
