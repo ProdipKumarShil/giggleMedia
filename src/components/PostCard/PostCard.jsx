@@ -6,8 +6,26 @@ import likeOutline from "../../assets/icons/like-outline.svg";
 import comment from "../../assets/icons/comment-outline.svg";
 import share from "../../assets/icons/share.svg";
 import moment from "moment";
+import { useState } from "react";
 
 const PostCard = ({ post }) => {
+  const [like, setLike] = useState(0);
+  let [likeCount, setLikeCount] = useState(post.likes)
+  
+  const handleLike = () => {
+    fetch(`http://localhost:5000/addLike/${post._id}`, {
+      method: "PATCH",
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.modifiedCount > 0) {
+          setLike(!like);
+          setLikeCount(likeCount += 1)
+        }
+      });
+  };
+  const handleComment = () => {};
+
   return (
     <div className="border rounded p-5 mb-8 shadow">
       <div className="flex justify-between items-center">
@@ -17,8 +35,7 @@ const PostCard = ({ post }) => {
             src="https://i.ibb.co/c18mK23/Fj-U2lkc-WYAg-NG6d.jpg"
             alt=""
           /> */}
-          <div
-            className="w-12 h-12 flex justify-center items-center text-xl font-bold bg-pink-300 rounded-full active:scale-95">
+          <div className="w-12 h-12 flex justify-center items-center text-xl font-bold bg-pink-300 rounded-full active:scale-95">
             {post?.userName?.split("")[0].toUpperCase()}
           </div>
           <div className="">
@@ -41,15 +58,19 @@ const PostCard = ({ post }) => {
       </div>
       {/* like and share */}
       <div className="mt-4 px-4 flex justify-between items-center">
-        <div className="flex items-center gap-1">
-          <img className="w-6 h-6" src={likeOutline} alt="" />
-          <p className="text-sm text-slate-500">{post.likes} likes</p>
+        <div
+          onClick={handleLike}
+          className="flex items-center gap-1 active:scale-95 cursor-pointer">
+          <img className="w-6 h-6" src={like ? likeFilled : likeOutline} alt="" />
+          <p className="text-sm text-slate-500">{likeCount} likes</p>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 active:scale-95 cursor-pointer">
           <img className="w-6 h-6" src={comment} alt="" />
-          <p className="text-sm text-slate-500">{post.comment.length} comment</p>
+          <p className="text-sm text-slate-500">
+            {post.comment.length} comment
+          </p>
         </div>
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1 active:scale-95 cursor-pointer">
           <img className="w-6 h-6" src={share} alt="" />
           <p className="text-sm text-slate-500">0 share</p>
         </div>

@@ -6,6 +6,7 @@ import Profile from "../Profile/Profile";
 
 const HomeLayout = () => {
   const [posts, setPosts] = useState([])
+  const [like, setLike] = useState(0)
   useEffect(() => {
     fetch('http://localhost:5000/posts')
       .then(res => res.json())
@@ -22,7 +23,7 @@ const HomeLayout = () => {
       <div className="col-span-6">
         <PostInput />
         {
-          posts.map(post => <PostCard post={post} key={post._id}/>)
+          posts.map(post => <PostCard like={like} setLike={setLike} post={post} key={post._id}/>)
         }
       </div>
       {/* right side */}
